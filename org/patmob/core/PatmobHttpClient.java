@@ -25,20 +25,23 @@ import org.apache.http.impl.client.HttpClientBuilder;
  * @author Piotr
  */
 public class PatmobHttpClient {
-    CloseableHttpClient httpClient;
-    RequestConfig requestConfig = null;
-    HttpClientContext context;
-    CredentialsProvider credsProvider;
+    static CloseableHttpClient httpClient = null;
+    static RequestConfig requestConfig = null;
+    static HttpClientContext context;
+    static CredentialsProvider credsProvider;
     
-    public PatmobHttpClient() {
-        setupHttpClient();
-    }
+//    public PatmobHttpClient() {
+//        
+//    }
     
-    public CloseableHttpClient getHttpClient() {
+    public static CloseableHttpClient getHttpClient() {
+        if (httpClient==null) {
+            setupHttpClient();
+        }
         return httpClient;
     }
     
-    private void setupHttpClient() {
+    private static void setupHttpClient() {
         // on first try requestConfig==null: connect without proxy
         HttpClientBuilder clientBuilder = HttpClientBuilder.create()
                 .setDefaultRequestConfig(requestConfig);
@@ -61,7 +64,7 @@ public class PatmobHttpClient {
 //            System.out.println("setupHttpClient3: " + httpResponse);
     }
     
-    private void defineProxy() {
+    private static void defineProxy() {
         // Get proxy from properties file or from user - if needed
         String hostname = "globalproxy-amer.pharma.aventis.com";
         int port = 3129;
@@ -73,7 +76,7 @@ public class PatmobHttpClient {
         setupHttpClient();
     }
     
-    private void analyzeResponse(HttpResponse httpResponse) {
+    private static void analyzeResponse(HttpResponse httpResponse) {
         if (httpResponse.getStatusLine().getStatusCode()==407) {
             // 407 Proxy Authentication Required
             defineProxyCredentials();
@@ -83,7 +86,7 @@ public class PatmobHttpClient {
         }
     }
     
-    private void defineProxyCredentials() {
+    private static void defineProxyCredentials() {
         // Get creds from properties file or from user - if needed
         String user = "nm54935", 
                 pass = "Genem0b78", 
