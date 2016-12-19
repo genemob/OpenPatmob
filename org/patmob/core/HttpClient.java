@@ -3,7 +3,6 @@
  */
 package org.patmob.core;
 
-import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -20,21 +19,21 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 /**
- * Configures org.apache.http.impl.client.CloseableHttpClient 
- * for possible proxy issues.
+ * One of PatMOb features is an extensive use of real-time data from EPO, 
+ * USPTO and paid-for databases like PatBase. This is the class used for 
+ * all HTTP connections. Configures 
+ * <code>org.apache.http.impl.client.CloseableHttpClient</code>
+ * for possible proxy issues, and returns it with 
+ * <code>public static getInstance()</code>.
  * @author Piotr
  */
-public class PatmobHttpClient {
+    public class HttpClient {
     static CloseableHttpClient httpClient = null;
     static RequestConfig requestConfig = null;
     static HttpClientContext context;
     static CredentialsProvider credsProvider;
     
-//    public PatmobHttpClient() {
-//        
-//    }
-    
-    public static CloseableHttpClient getHttpClient() {
+    public static CloseableHttpClient getInstance() {
         if (httpClient==null) {
             setupHttpClient();
         }
@@ -99,9 +98,5 @@ public class PatmobHttpClient {
         context.setCredentialsProvider(credsProvider);
 
         setupHttpClient();
-    }
-    
-    public static void main(String args[]) {
-        PatmobHttpClient phc = new PatmobHttpClient();
     }
 }
